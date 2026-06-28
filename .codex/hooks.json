@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/gaduo/IdeaProjects/obsidian-brain-template/.codex/hooks/stop-audit.sh' 2>/dev/null || powershell.exe -ExecutionPolicy Bypass -File '/Users/gaduo/IdeaProjects/obsidian-brain-template/.codex/hooks/stop-audit.ps1'"
+          }
+        ]
+      }
+    ]
+  }
+}
