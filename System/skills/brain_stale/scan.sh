@@ -37,6 +37,8 @@ echo ""
 HOLLOW=""
 while IFS= read -r idx; do
   dir=$(dirname "$idx")
+  # Skills 子目錄只有 _index.md 是正常結構（skill 即文件），跳過
+  case "$dir" in */skills/*) continue ;; esac
   n=$(find "$dir" -maxdepth 1 -name "*.md" ! -name "_index.md" 2>/dev/null | wc -l | tr -d ' ')
   if [ "$n" -eq 0 ]; then
     HOLLOW="$HOLLOW\n- $dir/"
@@ -58,20 +60,24 @@ echo ""
 ORPHAN=""
 while IFS= read -r f; do
   base=$(basename "$f" .md)
-  if ! grep -rql "\[\[$base" "$VAULT_ROOT" --include="_index.md" 2>/dev/null && \
-     ! grep -rql "^- \[\[$base" "$VAULT_ROOT" --include="_index.md" 2>/dev/null; then
+  # grep 搜尋 basename，支援子路徑引用（如 [[practice/diagnostic-junior]]）
+  if ! grep -rql "$base" "$VAULT_ROOT" --include="_index.md" 2>/dev/null; then
     ORPHAN="$ORPHAN\n- $f"
   fi
 done < <(find "$VAULT_ROOT" -name "*.md" \
            ! -name "_index.md" \
            ! -path "*/.git/*" \
+           ! -path "*/.claude/*" \
+           ! -path "*/.codex/*" \
            ! -path "*/journals/*" \
            ! -path "*/working-memory/*" \
            ! -path "*/session_logs/*" \
            ! -path "*/templates/*" \
            ! -path "*/assets/*" \
+           ! -path "*/skills/office_*/*" \
            ! -name "AGENTS.md" \
-           ! -name "README.md")
+           ! -name "README.md" \
+           ! -name "SKILL.md")
 if [ -z "$ORPHAN" ]; then
   echo "（無）"
 else
