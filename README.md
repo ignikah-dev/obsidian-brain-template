@@ -273,4 +273,3 @@ team:your-label  我今天遇到這個問題，幫我解釋...
 
 ---
 
-_Template by [Rhincodon Studio](https://github.com/rhincodon-studio)_
